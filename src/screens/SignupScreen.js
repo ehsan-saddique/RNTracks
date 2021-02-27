@@ -1,23 +1,50 @@
-import React from 'react'
-import { View, Text, StyleSheet, Button } from 'react-native'
+import React, { useContext, useEffect, useState } from 'react'
+import { View, StyleSheet } from 'react-native'
+import { Button, Input, Text } from 'react-native-elements'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import { NavigationEvents } from 'react-navigation'
+import AuthForm from '../components/AuthForm'
+import Spacer from '../components/Spacer'
+import { Context } from '../context/AuthContext'
 
-const SignupScreen = (props) => {
-    return <>
-        <Text style={styles.title}>SignupScreen</Text>
-        <Button
-            title="Sign In"
-            onPress={() => props.navigation.navigate("Signin")}
+const SignupScreen = ({ navigation }) => {
+    const { state, signup, clearErrorMessage } = useContext(Context)
+
+    return <View style={styles.container}>
+        <NavigationEvents
+            onWillFocus={clearErrorMessage}
+            onWillBlur={clearErrorMessage}
         />
-        <Button
-            title="Main Flow"
-            onPress={() => props.navigation.navigate("mainFlow")}
+
+        <AuthForm
+            headerText="Sign Up for Tracker"
+            submitBtnText="Sign Up"
+            errorMessage={state.errorMessage}
+            onSubmit={signup}
         />
-    </>
+
+        <Spacer>
+            <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
+                <Text style={styles.link}>Already have an account? Sign in</Text>
+            </TouchableOpacity>
+        </Spacer>
+    </View>
+}
+
+SignupScreen.navigationOptions = () => {
+    return {
+        headerShown: false
+    }
 }
 
 const styles = StyleSheet.create({
-    title: {
-        fontSize: 48
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        marginBottom: 250
+    },
+    link: {
+        color: "blue"
     }
 })
 
