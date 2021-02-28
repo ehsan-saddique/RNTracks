@@ -11,6 +11,8 @@ import SignupScreen from "./src/screens/SignupScreen";
 import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import TrackDetailScreen from "./src/screens/TrackDetailScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
+import { Provider as LocationProvider } from "./src/context/LocationContext";
+import { Provider as TrackProvider } from "./src/context/TrackContext";
 
 const switchNavigator = createSwitchNavigator({
   SplashScreen: AuthSplashScreen,
@@ -32,8 +34,12 @@ const App = createAppContainer(switchNavigator)
 
 export default () => {
   return (
-    <Provider>
-      <App ref={(navigator) => setNavigator(navigator)} />
-    </Provider>
+    <TrackProvider>
+      <LocationProvider>
+        <Provider>
+          <App ref={(navigator) => setNavigator(navigator)} />
+        </Provider>
+      </LocationProvider>
+    </TrackProvider>
   )
 }
