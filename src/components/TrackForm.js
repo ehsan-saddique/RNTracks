@@ -4,10 +4,17 @@ import Spacer from "./Spacer"
 import { Context as LocationContext } from "../context/LocationContext"
 import { Context as TrackContext } from "../context/TrackContext"
 import useSaveTrack from "../hooks/useSaveTrack"
+import { ActivityIndicator } from "react-native"
+import { useState } from "react"
 
 const TrackForm = () => {
     const { state, stopRecording, startRecording, changeName } = useContext(LocationContext)
     const [saveTrack] = useSaveTrack()
+    const [isCreatingTrack, setCreatingTrack] = useState(false)
+
+    if (isCreatingTrack) {
+        return <ActivityIndicator size="large" style={{ marginTop: 200 }} />
+    }
 
     return <>
         <Spacer>
@@ -38,7 +45,12 @@ const TrackForm = () => {
                 ?
                 <Button
                     title="Save"
-                    onPress={saveTrack}
+                    onPress={() => {
+                        setCreatingTrack(true)
+                        saveTrack(() => {
+                            setCreatingTrack(false)
+                        })
+                    }}
                 />
                 :
                 null

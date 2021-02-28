@@ -15,6 +15,8 @@ const authReducer = (state, action) => {
             return { ...state, recording: false }
         case 'CHANGE_NAME':
             return { ...state, name: action.payload }
+        case 'RESET':
+            return { ...state, name: '', locations: [] }
         default:
             return state
     }
@@ -41,9 +43,12 @@ const addLocation = dispatch => (location, recording) => {
     }
 }
 
+const reset = dispatch => () => {
+    dispatch({ type: 'RESET' })
+}
 
 
 
 export const { Context, Provider } = createDataContext(authReducer,
-    { startRecording, stopRecording, changeName, addLocation },
+    { startRecording, stopRecording, changeName, addLocation, reset },
     { name: '', recording: false, locations: [], currentLocation: null })
